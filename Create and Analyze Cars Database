@@ -30,41 +30,41 @@ SELECT * FROM Cars2;
 
 -- 1. How many car models have a year of 2018?
 
--- SELECT COUNT(*) FROM Cars2 WHERE car_year = 2018;
+SELECT COUNT(*) FROM Cars2 WHERE car_year = 2018;
 
 -- 2. How many car makes have a price of 18000 or more?
 
--- SELECT DISTINCT(car_make) FROM Cars2
--- WHERE price >= 18000;
+SELECT DISTINCT(car_make) FROM Cars2
+WHERE price >= 18000;
 
 -- 3. What is the total count of cars that are GMC?
 
--- SELECT COUNT(*) FROM Cars2 WHERE car_make = 'GMC';
+SELECT COUNT(*) FROM Cars2 WHERE car_make = 'GMC';
 
 -- 4. What is the total price of all cars within the car table?
 
--- SELECT SUM(Price) AS TotalPrice
--- FROM Cars2;
+SELECT SUM(Price) AS TotalPrice
+FROM Cars2;
 
 -- 1. How many car models have a year of 2018?
 
--- SELECT COUNT(*) FROM Cars2 AS Carmodelyear2018
--- WHERE car_year = 2018;
+SELECT COUNT(*) FROM Cars2 AS Carmodelyear2018
+WHERE car_year = 2018;
 
 -- 2. How many car makes have a price of 18000 or more?
 
--- SELECT DISTINCT(car_make) FROM Cars2 AS Price18000orMore
--- WHERE price >= 18000;
+SELECT DISTINCT(car_make) FROM Cars2 AS Price18000orMore
+WHERE price >= 18000;
 
 -- 3. What is the total count of cars that are GMC?
 
--- SELECT COUNT(*) FROM Cars2 AS GMCtotalcount
--- WHERE car_make = 'GMC';
+SELECT COUNT(*) FROM Cars2 AS GMCtotalcount
+WHERE car_make = 'GMC';
 
 -- 4. What is the total price of all cars within the car table?
 
--- SELECT SUM(Price) AS TotalPriceofCars
--- FROM Cars2;
+SELECT SUM(Price) AS TotalPriceofCars
+FROM Cars2;
 
 -- 1. Are there NULL values in the car table? If so, how many?
 
@@ -118,14 +118,14 @@ WHERE price IS NULL;
 -- Use a CASE/WHEN statement  to write  "American" 
 -- if the car_make is GMC, ford, or dodge, and "Japanese" if not American.
 
--- SELECT car_year, car_make,
--- CASE WHEN car_make = 'GMC' THEN 'American'
--- WHEN car_make = 'ford' THEN 'American'
--- WHEN car_make = 'dodge' THEN 'American'
--- WHEN car_make IS NULL THEN 'Unknown'
--- ELSE 'Japanese'
--- END AS origin
--- FROM Cars2;
+SELECT car_year, car_make,
+CASE WHEN car_make = 'GMC' THEN 'American'
+WHEN car_make = 'ford' THEN 'American'
+WHEN car_make = 'dodge' THEN 'American'
+WHEN car_make IS NULL THEN 'Unknown'
+ELSE 'Japanese'
+END AS origin
+FROM Cars2;
 
 SELECT car_year, car_make,
 CASE WHEN car_make IN ('GMC', 'ford', 'dodge') THEN 'American'
