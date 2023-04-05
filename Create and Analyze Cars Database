@@ -102,9 +102,9 @@ WHERE car_model ISNULL;
 -- 3. List all the models without a NULL value 
 -- in the car_model field from the car table.
 
--- SELECT car_make, car_model
--- FROM Cars2 c
--- WHERE car_model IS NOT NULL;
+SELECT car_make, car_model
+FROM Cars2 c
+WHERE car_model IS NOT NULL;
                                                                                            
 -- 4. List the NULL values of car makes that have 
 -- missing values for price.
