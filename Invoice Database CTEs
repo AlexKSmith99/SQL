@@ -1,0 +1,33 @@
+-- #1 (Subquery): Select only invoices where Total is equal to the minimum value of total
+SELECT * FROM Invoice WHERE Total = (SELECT MIN(Total) FROM Invoice);
+-- Evaluates to SELECT * FROM Invoice WHERE Total = 0.99;
+​
+-- #2 (Subquery): Select the names of tracks where the genre begins with B (without using a join!)
+SELECT TrackId, GenreId, Name FROM Track
+WHERE GenreId IN (SELECT GenreId FROM Genre WHERE Name LIKE 'B%');
+-- Evaluates to SELECT TrackId, GenreId, Name FROM Track WHERE GenreId IN (6, 11)
+​
+-- #3: (Subquery without primary key connection): Count the number of invoices where billing country was one of the countries 
+-- where we have employees
+​
+SELECT COUNT(*) FROM Invoice 
+WHERE BillingCountry IN (SELECT Country FROM Employee);
+-- Evaluates to SELECT COUNT(*) FROM Invoice WHERE BillingCountry IN ('Canada');
+​
+-- #4 (CTE): Create a virtual table called TopSellers that has songs that have brought in revenue of at least $3.00. 
+-- Output a list of Genres (including names) with a count of top sellers for that Genre.
+​
+WITH TopSellers AS(
+SELECT TrackId, SUM(UnitPrice) AS TotalRev
+FROM InvoiceLine
+GROUP BY TrackId
+HAVING SUM(UnitPrice) >= 3
+)
+SELECT G.Name, COUNT(*) AS TopSellerCount
+FROM TopSellers AS T1
+INNER JOIN Track AS T2
+ON T1.TrackId = T2.TrackId
+INNER JOIN Genre AS G
+ON G.GenreId = T2.GenreId
+GROUP BY G.Name
+ORDER BY TopSellerCount DESC;
