@@ -1,0 +1,62 @@
+-- You have a database with products in multiple categories. The product table contains the following columns: 
+-- product_id
+-- product_name
+-- product_category
+-- unit_price
+
+CREATE TABLE products_cte(
+product_id INT PRIMARY KEY,
+product_name TEXT,
+product_category TEXT,
+unit_price FLOAT
+);
+INSERT INTO products_cte VALUES
+(1, 'Widget 1', 'A', 4.99),
+(2, 'Widget 2', 'A', 5.99),
+(3, 'Widget 3', 'B', 20.99),
+(4, 'Widget 4', 'B', 21.99),
+(5, 'Widget 5', 'C', 100.00),
+(6, 'Widget 6', 'C', 120.00);
+
+-- Write a CTE that calculates the average price per category, and returns a table with the category, 
+-- number of products in the category, and average price for that category.
+WITH ap_per_cat AS(
+SELECT product_category, AVG(unit_price) AS CatAvg FROM products_cte GROUP BY product_category
+)
+SELECT product_name, products_cte.product_category, CatAvg
+FROM products_cte
+INNER JOIN ap_per_cat
+ON products_cte.product_category = ap_per_cat.product_category;
+
+-- Easier answer
+WITH ap_per_cat AS(
+SELECT product_category, 
+COUNT(product_category) AS prod_count, 
+AVG(unit_price) AS cat_avg 
+FROM products_cte 
+GROUP BY product_category
+)
+SELECT * FROM ap_per_cat;
+
+-- Part 2:  
+-- Use the CTE in a query that determines the category with the maximum average price, and also the category name 
+-- and the count of products in that category.  
+WITH ap_per_cat AS(
+SELECT product_category,
+COUNT(product_category) AS prod_count, 
+AVG(unit_price) AS CatAvg 
+FROM products_cte 
+GROUP BY product_category
+)
+SELECT product_category, prod_count, MAX(CatAvg)
+FROM ap_per_cat;
+
+WITH ap_per_cat AS(
+SELECT product_category,
+COUNT(product_category) AS prod_count,
+AVG(unit_price) AS cat_avg
+FROM products_cte
+GROUP BY product_category
+)
+-- See what is in temporary table: SELECT * FROM ap_per_cat;
+SELECT product_category, prod_count, MAX(cat_avg) FROM ap_per_cat;
