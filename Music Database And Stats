@@ -1,0 +1,43 @@
+-- Using the employee database, create a CASE WHEN that will return a "Senior Employee" 
+-- for employees who have been at the company 10 or more years, and "Junior Employee" otherwise.
+-- Call the value IsSenior.
+
+SELECT EmployeeName, YearsWorked,
+CASE WHEN YearsWorked >= 10 THEN 'Senior Employee'
+ELSE 'Junior Employee'
+END AS Seniority
+FROM employees;
+
+-- Using the Track table of the music database, create a CASE WHEN that will return "Long" when a song
+-- is greater than 6 minutes, "Medium" when it is 4-6 minutes, and "Short" otherwise. Call it "SongLength".
+
+SELECT Name, ROUND(Milliseconds/60000.0, 2) AS Minutes, 
+CASE WHEN Milliseconds/60000.0 > 6.0 THEN 'Long'
+WHEN Milliseconds/60000.0 >= 4.0 THEN 'Medium'
+ELSE 'Short'
+END AS SongLength
+FROM Track;
+
+--Do long songs sell better than short songs?
+
+SELECT CASE WHEN Milliseconds/60000.0 > 6.0 THEN 'Long'
+WHEN Milliseconds/60000.0 >= 4.0 THEN 'Medium'
+ELSE 'Short'
+END AS SongLength, 
+SUM(IL.UnitPrice) AS TotalRev, 
+SUM(Quantity) AS TotalQuantity,
+ROUND(SUM(IL.UnitPrice) / SUM(Quantity), 2) AS RevPerSong
+FROM Track AS T
+JOIN InvoiceLine AS IL
+ON T.TrackId = IL.TrackId
+GROUP BY SongLength;
+
+-- Going back to the music database, select customers who are not affiliated with a company.
+-- Include first name, last name, and company.
+-- Why is the obvious way to do it wrong?
+
+SELECT FirstName, LastName, Company
+FROM Customer
+--WHERE Company = NULL;
+--WHERE Company = 'NULL';
+WHERE Company IS NULL;
