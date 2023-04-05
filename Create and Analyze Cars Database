@@ -1,0 +1,135 @@
+CREATE TABLE Cars2 (
+	car_make varchar,	
+	car_model varchar,
+	car_year INTEGER,
+	price FLOAT
+);
+-- INSERT VALUES
+	INSERT INTO Cars2 VALUES('dodge',NULL,2018,18000),
+	('ford','focus',2018,18000),
+	('ford','explorer',2019,21000),
+	(NULL,'ram',2019,32000),
+	('dodge','durango',2020,16000),
+	('ford','focus',2020,17000),
+	('ford','explorer',2017,17000),
+	('dodge','ram',2017,12000),
+	(NULL,'outlander',2016,13000),
+	(NULL,'outlander',NULL,18000),
+	('GMC','Terrain',NULL,18000),
+	('GMC','Sierra',2018,21000),
+	('ford','explorer',2019,32000),
+	('dodge',NULL,2019,16000),
+	('mitsubishi',NULL,2020,17000),
+	('mitsubishi','outlander',2020,NULL),
+	('GMC','Terrain',2017,NULL),
+	('GMC','Sierra',2017,13000);
+
+-- TRUST BUT VERIFY
+
+SELECT * FROM Cars2;
+
+-- 1. How many car models have a year of 2018?
+
+-- SELECT COUNT(*) FROM Cars2 WHERE car_year = 2018;
+
+-- 2. How many car makes have a price of 18000 or more?
+
+-- SELECT DISTINCT(car_make) FROM Cars2
+-- WHERE price >= 18000;
+
+-- 3. What is the total count of cars that are GMC?
+
+-- SELECT COUNT(*) FROM Cars2 WHERE car_make = 'GMC';
+
+-- 4. What is the total price of all cars within the car table?
+
+-- SELECT SUM(Price) AS TotalPrice
+-- FROM Cars2;
+
+-- 1. How many car models have a year of 2018?
+
+-- SELECT COUNT(*) FROM Cars2 AS Carmodelyear2018
+-- WHERE car_year = 2018;
+
+-- 2. How many car makes have a price of 18000 or more?
+
+-- SELECT DISTINCT(car_make) FROM Cars2 AS Price18000orMore
+-- WHERE price >= 18000;
+
+-- 3. What is the total count of cars that are GMC?
+
+-- SELECT COUNT(*) FROM Cars2 AS GMCtotalcount
+-- WHERE car_make = 'GMC';
+
+-- 4. What is the total price of all cars within the car table?
+
+-- SELECT SUM(Price) AS TotalPriceofCars
+-- FROM Cars2;
+
+-- 1. Are there NULL values in the car table? If so, how many?
+
+SELECT COUNT(*) FROM Cars2 WHERE car_make IS NULL;
+SELECT COUNT(*) FROM Cars2 WHERE car_model IS NULL;
+SELECT COUNT(*) FROM Cars2 WHERE car_year IS NULL;
+SELECT COUNT(*) FROM Cars2 WHERE price IS NULL;
+
+-- Sum number of rows where AT LEAST one is null
+SELECT COUNT(*) FROM Cars2 
+WHERE car_make IS NULL OR
+car_model IS NULL OR
+car_year IS NULL OR
+price IS NULL;
+
+-- Sum all the nulls
+SELECT
+(SUM(car_make IS NULL)+
+SUM(car_model IS NULL)+
+SUM(car_year IS NULL)+
+SUM(price IS NULL)) AS TotalNulls
+FROM Cars2;
+
+-- 2. List all the car models with a NULL value in the 
+-- car_model field from the car table.
+
+SELECT COUNT(*) FROM Cars2
+WHERE car_model IS NULL;
+
+SELECT car_make, 
+IFNULL(car_model, 'OMG what is it tho?')
+FROM Cars2 c
+WHERE car_model ISNULL;
+
+-- 3. List all the models without a NULL value 
+-- in the car_model field from the car table.
+
+-- SELECT car_make, car_model
+-- FROM Cars2 c
+-- WHERE car_model IS NOT NULL;
+                                                                                           
+-- 4. List the NULL values of car makes that have 
+-- missing values for price.
+
+SELECT car_make, price
+FROM Cars2 c
+WHERE price IS NULL;
+
+-- Write a SELECT statement that retrieves car_year and car_make, 
+-- and creates a new column called "origin".  
+-- Use a CASE/WHEN statement  to write  "American" 
+-- if the car_make is GMC, ford, or dodge, and "Japanese" if not American.
+
+-- SELECT car_year, car_make,
+-- CASE WHEN car_make = 'GMC' THEN 'American'
+-- WHEN car_make = 'ford' THEN 'American'
+-- WHEN car_make = 'dodge' THEN 'American'
+-- WHEN car_make IS NULL THEN 'Unknown'
+-- ELSE 'Japanese'
+-- END AS origin
+-- FROM Cars2;
+
+SELECT car_year, car_make,
+CASE WHEN car_make IN ('GMC', 'ford', 'dodge') THEN 'American'
+WHEN car_make IS NULL THEN 'Unknown'
+ELSE 'Japanese'
+END AS origin
+FROM Cars2;
