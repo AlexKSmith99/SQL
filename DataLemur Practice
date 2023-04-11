@@ -1,0 +1,24 @@
+#Given 'callers' Table
+#Write a query to find how many UHG members made 3 or more calls. case_id column uniquely identifies each call made.
+
+WITH call_records AS (
+SELECT policy_holder_id, COUNT(policy_holder_id)
+FROM callers
+GROUP BY policy_holder_id
+HAVING COUNT(policy_holder_id) > 2)
+SELECT COUNT(policy_holder_id)
+FROM call_records;
+
+#Write a query to find the percentage of calls that cannot be categorised. Round your answer to 1 decimal place
+
+WITH uncategorised_calls AS (
+  SELECT COUNT(case_id) AS call_count
+  FROM callers
+  WHERE call_category IS NULL
+    OR call_category = 'n/a'
+)
+
+SELECT 
+  ROUND(100.0 * call_count 
+    / (SELECT COUNT(*) FROM callers), 1) AS uncategorised_call_pct
+FROM uncategorised_calls;
